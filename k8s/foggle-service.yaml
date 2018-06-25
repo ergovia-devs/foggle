@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: foggle
+spec:
+  selector:
+    app: foggle
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8070
+    targetPort: 8070
+    nodePort: 348070
+  type: NodePort

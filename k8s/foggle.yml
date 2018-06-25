@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment # Typ Verwaltungsdefinition der Pods. U.a. welcher Container, Updates, Skalierung. Hier, für Unsere java-Backend-Pods
+metadata:
+  name: foggle
+  labels: # Labels werden zur Ansteuerung der Pods benötigt
+    app: foggle
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # Labels werden zur Ansteuerung der Pods benötigt
+      app: foggle
+      tier: backend
+
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+
+  template: # Jeder erstelle Pod erhalt die folgenden Spezifikationen
+    metadata:
+      labels: # Labels werden zur Ansteuerung der Pods benötigt
+        app: foggle
+        tier: backend
+    spec:
+      containers:
+      - name: foggler
+        #    Example:      image: hub.evsrv.de/bm/frontend:test_b99_test
+        image: hub.evsrv.de/stepnova/foggle:test_b1
+        imagePullPolicy: Always
+        ports: ## Mit Namen versehene Ports, die verfügbar (EXPOSE) werden
+        - name: node-host
+          containerPort: 8070
+
+        readinessProbe: # Prüfe jede Sekunde, ob die Applikation im Pod bereits hochgefahren ist.
+                          # Vorher wird kein Traffic an diesen Pod vom Service weitergeleitet.
+          httpGet:
+            path: /health
+            port: 8070
+          initialDelaySeconds: 1
+          periodSeconds: 1
+
+        livenessProbe: # Nach 5 Sekunden überprüft die liveness probe alle 2 Sekunden ob die Applikation im
+                       # Pod noch erreichbar ist.
+          httpGet:
+            path: /health
+            port: 8070
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          failureThreshold: 2
+
+        resources: # Für den Auto-Scaler wichtige Daten. Wie viel Ressourcen erhält der Pod.
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+

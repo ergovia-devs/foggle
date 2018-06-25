@@ -1,0 +1,34 @@
+{
+    "name": "foggle",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "./node_modules/grunt/bin/grunt build && node ./build/de/ergovia/foggle/app.js",
+        "sonar": "./node_modules/sonar-web-frontend-reporters/bin/sreporter"
+    },
+    "dependencies": {
+        "body-parser": "1.18.2",
+        "cookie-parser": "1.4.3",
+        "cors": "2.8.4",
+        "date-fns": "1.29.0",
+        "debug": "2.6.9",
+        "express": "4.16.0",
+        "mongodb": "3.0.10",
+        "morgan": "~1.9.0"
+    },
+    "devDependencies": {
+        "babel-cli": "6.26.0",
+        "babel-core": "6.26.0",
+        "babel-eslint": "8.2.3",
+        "babel-preset-env": "1.6.1",
+        "eslint": "4.19.1",
+        "eslint-plugin-promise": "3.7.0",
+        "eslint-plugin-standard": "3.0.1",
+        "grunt": "1.0.2",
+        "grunt-babel": "7.0.0",
+        "grunt-contrib-clean": "1.1.0",
+        "grunt-contrib-copy": "1.0.0",
+        "load-grunt-tasks": "3.5.2",
+        "sonar-web-frontend-reporters": "3.3.0"
+    }
+}

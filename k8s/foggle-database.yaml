@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: foggle-database
+  labels:
+    name: database
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  clusterIP: None
+  selector:
+    app: foggle
+    tier: database
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: foggle-database
+spec:
+ serviceName: "foggle-database"
+ selector:
+   matchLabels:
+     app: foggle
+     tier: database
+ updateStrategy:
+  type: RollingUpdate
+ replicas: 2
+ template:
+   metadata:
+     labels:
+       app: foggle
+       tier: database
+   spec:
+     terminationGracePeriodSeconds: 10
+     containers:
+       - name: foggle-database
+         image: mongo:3.6
+         command:
+           - mongod
+           - "--replSet"
+           - rs0
+           - "--smallfiles"
+           - "--noprealloc"
+           - "--bind_ip_all"
+         ports:
+           - containerPort: 27017
+         volumeMounts:
+           - name: foggle-persistent-storage
+             mountPath: /data/db
+         readinessProbe:
+           tcpSocket:
+             port: 27017
+           initialDelaySeconds: 5
+           periodSeconds: 10
+         livenessProbe:
+           tcpSocket:
+             port: 27017
+           initialDelaySeconds: 15
+           periodSeconds: 20
+       - name: mongo-sidecar
+         image: cvallance/mongo-k8s-sidecar
+         env:
+           - name: MONGO_SIDECAR_POD_LABELS
+             value: "app=foggle,tier=database"
+           - name: KUBERNETES_MONGO_SERVICE_NAME
+             value: "foggle-database"
+           - name: KUBE_NAMESPACE
+             valueFrom:
+               configMapKeyRef:
+                 name: app-environment
+                 key: SPRING_PROFILES_ACTIVE # <- Namespace Name
+
+ volumeClaimTemplates:
+ - metadata:
+     name: foggle-persistent-storage
+   spec:
+     accessModes: [ "ReadWriteOnce" ]
+     resources:
+       requests:
+         storage: 2Gi
