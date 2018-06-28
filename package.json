@@ -3,8 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "start": "./node_modules/grunt/bin/grunt build && node ./build/de/ergovia/foggle/app.js",
-        "sonar": "./node_modules/sonar-web-frontend-reporters/bin/sreporter"
+        "start": "./node_modules/grunt/bin/grunt build && nodenv ./build/de/ergovia/foggle/app.js"
     },
     "dependencies": {
         "body-parser": "1.18.2",
@@ -24,11 +23,11 @@
         "eslint": "4.19.1",
         "eslint-plugin-promise": "3.7.0",
         "eslint-plugin-standard": "3.0.1",
-        "grunt": "1.0.2",
+        "grunt": "1.0.3",
         "grunt-babel": "7.0.0",
         "grunt-contrib-clean": "1.1.0",
         "grunt-contrib-copy": "1.0.0",
         "load-grunt-tasks": "3.5.2",
-        "sonar-web-frontend-reporters": "3.3.0"
+        "node-env-run": "3.0.2"
     }
 }

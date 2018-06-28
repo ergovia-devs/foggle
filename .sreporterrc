@@ -1,9 +1,0 @@
-{
-  "projectName": "foggle",
-  "eslint": {
-    "src": "src/**/*.js*",
-    "report": "reports/sonar/eslint.json",
-    "rulesFile": ".eslintrc",
-    "ignorePath": ".eslintignore"
-  }
-}

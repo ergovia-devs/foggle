@@ -4,20 +4,39 @@
  * (c) 2018 ergovia GmbH
  */
 import express from 'express';
+import {getFeature, releaseFeature} from "../database/mongo";
 
 const router = express.Router();
 
-router.put('/', (req, res) => {
+router.put('/:id', (req, res) => {
 
-    const body = req.body();
+    const id = req.params.id;
 
-    bildungsmanagerFeatures.push({
-        id: body.id,
-        module: body.module,
-        manually_activated: body.manually_activated,
-        release_date: body.release_date
+    if (req.header('x-token-authorization') !== process.env.SECURITY_TOKEN) {
+        res.status(401);
+        res.end();
+        return;
+    }
+
+    getFeature(id).then(docs => {
+
+        if (docs.length) {
+
+            releaseFeature(id).then(() => {
+                res.status(201);
+                res.end();
+            }).catch(() => {
+                res.status(500);
+                res.end();
+            })
+
+        } else {
+            res.status(304);
+            res.end();
+        }
+
     });
 
-    res.status(204)
-
 });
+
+module.exports = router;

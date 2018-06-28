@@ -8,7 +8,8 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import cors from 'cors';
 
-import feature from './routes/feature'
+import features from './routes/features'
+import release from './routes/release'
 import health_check from './routes/health_check'
 
 const app = express();
@@ -17,7 +18,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/feature', feature);
+app.use('/features', features);
+app.use('/release', release);
 app.use('/health', health_check);
 
 

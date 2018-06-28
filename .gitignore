@@ -6,3 +6,4 @@ reports/
 .pytest_cache/
 .venv/
 test/docker/__pycache__
+.env
