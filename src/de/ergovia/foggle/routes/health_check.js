@@ -8,11 +8,18 @@ import express from 'express';
 /**
  * Route /health für den Healthcheck.
  */
+module.exports = app => {
 
-const router = express.Router();
+    const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send(`Mir geht's gut.`);
-});
+    router.get('/', (req, res) => {
+        res.send(`Mir geht's gut, denn ich habe Version ${process.env.npm_package_version}.`);
+    });
 
-module.exports = router;
+    app.use('/health', router);
+
+    return app;
+
+};
+
+

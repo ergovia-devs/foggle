@@ -6,37 +6,43 @@
 import express from 'express';
 import {getFeature, releaseFeature} from "../database/mongo";
 
-const router = express.Router();
+module.exports = (app, dbConnection) => {
 
-router.put('/:id', (req, res) => {
+    const router = express.Router();
 
-    const id = req.params.id;
+    router.put('/:id', (req, res) => {
 
-    if (req.header('x-token-authorization') !== process.env.SECURITY_TOKEN) {
-        res.status(401);
-        res.end();
-        return;
-    }
+        const id = req.params.id;
 
-    getFeature(id).then(docs => {
-
-        if (docs.length) {
-
-            releaseFeature(id).then(() => {
-                res.status(201);
-                res.end();
-            }).catch(() => {
-                res.status(500);
-                res.end();
-            })
-
-        } else {
-            res.status(304);
+        if (req.header('x-token-authorization') !== process.env.SECURITY_TOKEN) {
+            res.status(401);
             res.end();
+            return;
         }
+
+        getFeature(id).then(docs => {
+
+            if (docs.length) {
+
+                releaseFeature(dbConnection, id).then(() => {
+                    res.status(201);
+                    res.end();
+                }).catch(() => {
+                    res.status(500);
+                    res.end();
+                })
+
+            } else {
+                res.status(404);
+                res.end();
+            }
+
+        });
 
     });
 
-});
+    app.use('/release', router);
 
-module.exports = router;
+    return app;
+};
+
