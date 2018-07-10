@@ -68,8 +68,7 @@ spec:
            - name: KUBE_NAMESPACE
              valueFrom:
                fieldRef:
-               # Fetching current namespace from pod-fields
-               fieldPath: metadata.namespace
+                 fieldPath: metadata.namespace
 
  volumeClaimTemplates:
  - metadata:
