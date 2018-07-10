@@ -10,5 +10,5 @@ spec:
   - protocol: TCP
     port: 8070
     targetPort: 8070
-    nodePort: 38070
+    nodePort: 31070
   type: NodePort

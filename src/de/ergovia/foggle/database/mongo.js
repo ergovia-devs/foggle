@@ -23,7 +23,7 @@ import format from 'date-fns/format'
 import startOfToday from 'date-fns/start_of_today'
 
 const MongoClient = mongodb.MongoClient,
-    dbName = 'foggle',
+    dbName = 'foggle-db',
     collectionName = 'features';
 
 /**

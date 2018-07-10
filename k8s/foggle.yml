@@ -25,9 +25,9 @@ spec:
         tier: backend
     spec:
       containers:
-      - name: foggler
+      - name: foggle
         #    Example:      image: hub.evsrv.de/bm/frontend:test_b99_test
-        image: hub.evsrv.de/stepnova/foggle:test_b1
+        image: hub.evsrv.de/stepnova/foggle:latest
         imagePullPolicy: Always
         ports: ## Mit Namen versehene Ports, die verfügbar (EXPOSE) werden
         - name: node-host
