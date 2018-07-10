@@ -67,9 +67,9 @@ spec:
              value: "foggle-database"
            - name: KUBE_NAMESPACE
              valueFrom:
-               configMapKeyRef:
-                 name: app-environment
-                 key: SPRING_PROFILES_ACTIVE # <- Namespace Name
+               fieldRef:
+               # Fetching current namespace from pod-fields
+               fieldPath: metadata.namespace
 
  volumeClaimTemplates:
  - metadata:

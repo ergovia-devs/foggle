@@ -35,7 +35,7 @@ export function establishConnection() {
 
     return new Promise((resolve, reject) => {
 
-        MongoClient.connect('mongodb://localhost:27017', {
+        MongoClient.connect(process.env.MONGO_CONNECTION, {
             poolSize: 10
         }).then(client => {
             resolve(client.db(dbName));

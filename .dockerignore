@@ -1,0 +1,10 @@
+.idea
+k8s
+node_modules
+src
+.babelrc
+.eslintignore
+.eslintrc
+.gitignore
+Dockerfile
+foggle-backend.iml

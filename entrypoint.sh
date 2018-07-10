@@ -21,4 +21,5 @@
 # (c) Copyright 2018 ergovia GmbH
 #
 
-node build/de/ergovia/foggle/app.js
+npm install
+./node_modules/node-env-run/dist/bin/node-env-run.js ./build/de/ergovia/foggle/app.js
