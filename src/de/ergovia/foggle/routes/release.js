@@ -25,9 +25,15 @@ module.exports = (app, dbConnection) => {
 
     const router = express.Router();
 
-    router.put('/:id', (req, res) => {
+    router.put('/', (req, res) => {
 
-        const id = req.params.id;
+        const body = req.body;
+
+        if (!body.id || !body.module) {
+            res.status(400);
+            res.end();
+            return;
+        }
 
         if (req.header('x-token-authorization') !== process.env.SECURITY_TOKEN) {
             res.status(401);
@@ -35,11 +41,11 @@ module.exports = (app, dbConnection) => {
             return;
         }
 
-        getFeature(id).then(docs => {
+        getFeature(dbConnection, body.id, body.module).then(docs => {
 
             if (docs.length) {
 
-                releaseFeature(dbConnection, id).then(() => {
+                releaseFeature(dbConnection, body.id, body.module).then(() => {
                     res.status(201);
                     res.end();
                 }).catch(() => {

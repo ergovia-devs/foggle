@@ -67,7 +67,7 @@ module.exports = (app, dbConnection) => {
             return;
         }
 
-        getFeature(dbConnection, req.body.id).then(doc => {
+        getFeature(dbConnection, body.id, body.module).then(doc => {
 
             if (doc.length === 0) {
                 createFeature(dbConnection, {
@@ -102,9 +102,15 @@ module.exports = (app, dbConnection) => {
     /**
      * Deletes a feature with the given id
      */
-    router.delete('/delete/:id', (req, res) => {
+    router.delete('/delete', (req, res) => {
 
-        const id = req.params.id;
+        const body = req.body;
+
+        if (!body.id || !body.module) {
+            res.status(400);
+            res.end();
+            return;
+        }
 
         if (req.header('x-token-authorization') !== process.env.SECURITY_TOKEN) {
             res.status(401);
@@ -112,10 +118,10 @@ module.exports = (app, dbConnection) => {
             return;
         }
 
-        getFeature(dbConnection, id).then(doc => {
+        getFeature(dbConnection, body.id, body.module).then(doc => {
 
             if (doc.length) {
-                deleteFeature(dbConnection, id).then(() => {
+                deleteFeature(dbConnection, body.id, body.module).then(() => {
                     res.status(201);
                     res.end();
 

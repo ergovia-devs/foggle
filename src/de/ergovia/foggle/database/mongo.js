@@ -51,14 +51,15 @@ export function establishConnection() {
  *
  * @param dbConnection the connection to the database
  * @param id the unique feature id
+ * @param module the module the feature belongs to
  *
  * @return {Promise}
  */
-export function getFeature(dbConnection, id) {
+export function getFeature(dbConnection, id, module) {
 
     return new Promise((resolve, reject) => {
 
-        dbConnection.collection(collectionName).find({ id }).toArray().then(resolve).catch(reject);
+        dbConnection.collection(collectionName).find({ id, module }).toArray().then(resolve).catch(reject);
 
     });
 
@@ -108,13 +109,14 @@ export function createFeature(dbConnection, doc) {
  *
  * @param dbConnection the connection to the database
  * @param id the feature id to delete
+ * @param module the module the feature belongs to
  * @return {Promise}
  */
-export function deleteFeature(dbConnection, id) {
+export function deleteFeature(dbConnection, id, module) {
 
     return new Promise((resolve, reject) => {
 
-        dbConnection.collection(collectionName).deleteMany({ id }).then(resolve).catch(reject);
+        dbConnection.collection(collectionName).deleteMany({ id, module }).then(resolve).catch(reject);
 
     });
 
